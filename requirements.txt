@@ -1,0 +1,10 @@
+streamlit
+pandas
+numpy
+xgboost
+beautifulsoup4
+cloudscraper
+youtube-search-python
+youtube-transcript-api
+tweepy
+textblob
