@@ -1,0 +1,1233 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "39b026a3",
+   "metadata": {
+    "_cell_guid": "997a6c29-a674-43d1-918e-e0dd8889bb62",
+    "_kg_hide-input": true,
+    "_kg_hide-output": true,
+    "_uuid": "9f44452e-4a68-4750-9430-69307358cff0",
+    "collapsed": false,
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:15:27.655918Z",
+     "iopub.status.busy": "2024-08-15T18:15:27.655104Z",
+     "iopub.status.idle": "2024-08-15T18:16:04.066996Z",
+     "shell.execute_reply": "2024-08-15T18:16:04.065549Z"
+    },
+    "jupyter": {
+     "outputs_hidden": false
+    },
+    "papermill": {
+     "duration": 36.424171,
+     "end_time": "2024-08-15T18:16:04.069666",
+     "exception": false,
+     "start_time": "2024-08-15T18:15:27.645495",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Collecting icecream\r\n",
+      "  Obtaining dependency information for icecream from https://files.pythonhosted.org/packages/06/4e/21e309c7087695cf500a1827597f8510641f2c9a50ed7741bf7fc38736ff/icecream-2.1.3-py2.py3-none-any.whl.metadata\r\n",
+      "  Downloading icecream-2.1.3-py2.py3-none-any.whl.metadata (1.4 kB)\r\n",
+      "Requirement already satisfied: colorama>=0.3.9 in /opt/conda/lib/python3.10/site-packages (from icecream) (0.4.6)\r\n",
+      "Requirement already satisfied: pygments>=2.2.0 in /opt/conda/lib/python3.10/site-packages (from icecream) (2.16.1)\r\n",
+      "Requirement already satisfied: executing>=0.3.1 in /opt/conda/lib/python3.10/site-packages (from icecream) (1.2.0)\r\n",
+      "Requirement already satisfied: asttokens>=2.0.1 in /opt/conda/lib/python3.10/site-packages (from icecream) (2.2.1)\r\n",
+      "Requirement already satisfied: six in /opt/conda/lib/python3.10/site-packages (from asttokens>=2.0.1->icecream) (1.16.0)\r\n",
+      "Downloading icecream-2.1.3-py2.py3-none-any.whl (8.4 kB)\r\n",
+      "Installing collected packages: icecream\r\n",
+      "Successfully installed icecream-2.1.3\r\n",
+      "Collecting pint\r\n",
+      "  Obtaining dependency information for pint from https://files.pythonhosted.org/packages/3f/2b/abe15c62ef1aece41d0799f31ba97d298aad9c76bc31dd655c387c29f17a/Pint-0.24.3-py3-none-any.whl.metadata\r\n",
+      "  Downloading Pint-0.24.3-py3-none-any.whl.metadata (8.5 kB)\r\n",
+      "Requirement already satisfied: appdirs>=1.4.4 in /opt/conda/lib/python3.10/site-packages (from pint) (1.4.4)\r\n",
+      "Requirement already satisfied: typing-extensions in /opt/conda/lib/python3.10/site-packages (from pint) (4.5.0)\r\n",
+      "Collecting flexcache>=0.3 (from pint)\r\n",
+      "  Obtaining dependency information for flexcache>=0.3 from https://files.pythonhosted.org/packages/27/cd/c883e1a7c447479d6e13985565080e3fea88ab5a107c21684c813dba1875/flexcache-0.3-py3-none-any.whl.metadata\r\n",
+      "  Downloading flexcache-0.3-py3-none-any.whl.metadata (7.0 kB)\r\n",
+      "Collecting flexparser>=0.3 (from pint)\r\n",
+      "  Obtaining dependency information for flexparser>=0.3 from https://files.pythonhosted.org/packages/a3/28/5ce78a4838bb9da1bd9f64bc79ba12ddbfcb4824a11ef41da6f05d3240ef/flexparser-0.3.1-py3-none-any.whl.metadata\r\n",
+      "  Downloading flexparser-0.3.1-py3-none-any.whl.metadata (18 kB)\r\n",
+      "Downloading Pint-0.24.3-py3-none-any.whl (301 kB)\r\n",
+      "\u001b[2K   \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m301.8/301.8 kB\u001b[0m \u001b[31m6.5 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\r\n",
+      "\u001b[?25hDownloading flexcache-0.3-py3-none-any.whl (13 kB)\r\n",
+      "Downloading flexparser-0.3.1-py3-none-any.whl (27 kB)\r\n",
+      "Installing collected packages: flexparser, flexcache, pint\r\n",
+      "Successfully installed flexcache-0.3 flexparser-0.3.1 pint-0.24.3\r\n",
+      "Collecting bs4\r\n",
+      "  Obtaining dependency information for bs4 from https://files.pythonhosted.org/packages/51/bb/bf7aab772a159614954d84aa832c129624ba6c32faa559dfb200a534e50b/bs4-0.0.2-py2.py3-none-any.whl.metadata\r\n",
+      "  Downloading bs4-0.0.2-py2.py3-none-any.whl.metadata (411 bytes)\r\n",
+      "Requirement already satisfied: beautifulsoup4 in /opt/conda/lib/python3.10/site-packages (from bs4) (4.12.2)\r\n",
+      "Requirement already satisfied: soupsieve>1.2 in /opt/conda/lib/python3.10/site-packages (from beautifulsoup4->bs4) (2.3.2.post1)\r\n",
+      "Downloading bs4-0.0.2-py2.py3-none-any.whl (1.2 kB)\r\n",
+      "Installing collected packages: bs4\r\n",
+      "Successfully installed bs4-0.0.2\r\n"
+     ]
+    }
+   ],
+   "source": [
+    "!pip install icecream\n",
+    "!pip install pint\n",
+    "!pip install bs4"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9c4da0c9",
+   "metadata": {
+    "papermill": {
+     "duration": 0.007066,
+     "end_time": "2024-08-15T18:16:04.084193",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:04.077127",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## This script was used to scrape the data \n",
+    "for this [UFC Fighters' Stats dataset](https://www.kaggle.com/datasets/asaniczka/ufc-fighters-statistics).\n",
+    "This was initialy a regular python script with a bunch of modules.\n",
+    "\n",
+    "But I tried my best to make a it a 1 page notebook on kaggle"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "5f0a311a",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:04.100936Z",
+     "iopub.status.busy": "2024-08-15T18:16:04.099945Z",
+     "iopub.status.idle": "2024-08-15T18:16:05.347777Z",
+     "shell.execute_reply": "2024-08-15T18:16:05.346802Z"
+    },
+    "papermill": {
+     "duration": 1.259315,
+     "end_time": "2024-08-15T18:16:05.350597",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:04.091282",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import string\n",
+    "import datetime\n",
+    "import re\n",
+    "import os\n",
+    "import logging\n",
+    "import time\n",
+    "from typing import Optional, Union\n",
+    "\n",
+    "import pint\n",
+    "from bs4 import BeautifulSoup\n",
+    "from icecream import ic\n",
+    "import requests"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "06024e62",
+   "metadata": {
+    "papermill": {
+     "duration": 0.007081,
+     "end_time": "2024-08-15T18:16:05.365226",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.358145",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## Helper functions\n",
+    "These functions are common and reusable, so I'm not going to include them as part of the main script"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "c8f8a824",
+   "metadata": {
+    "_kg_hide-input": true,
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:05.381857Z",
+     "iopub.status.busy": "2024-08-15T18:16:05.381288Z",
+     "iopub.status.idle": "2024-08-15T18:16:05.400927Z",
+     "shell.execute_reply": "2024-08-15T18:16:05.399815Z"
+    },
+    "papermill": {
+     "duration": 0.030932,
+     "end_time": "2024-08-15T18:16:05.403253",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.372321",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def setup_logger(log_file_path: str) -> logging:\n",
+    "    \"\"\"Set up a logger and return the logger instance.\n",
+    "\n",
+    "    Args:\n",
+    "        log_file_path (str): The path of the log file.\n",
+    "\n",
+    "    Returns:\n",
+    "        logging.Logger: The configured logger instance.\n",
+    "\n",
+    "    Example Usage:\n",
+    "        `LOGGER = setup_logger(\"/path/to/log/file.log\")`\n",
+    "\n",
+    "        `LOGGER = setup_logger(log_file_path)`\n",
+    "    \"\"\"\n",
+    "\n",
+    "    logger = logging.getLogger(__name__)\n",
+    "    logger.setLevel(logging.DEBUG)  # set the logging level to debug\n",
+    "\n",
+    "    log_format = logging.Formatter(\n",
+    "        '%(asctime)s :   %(levelname)s   :   %(message)s')\n",
+    "\n",
+    "    # init the console logger\n",
+    "    stream_handler = logging.StreamHandler()\n",
+    "    stream_handler.setLevel(logging.INFO)\n",
+    "    stream_handler.setFormatter(log_format)  # add the format\n",
+    "    logger.addHandler(stream_handler)\n",
+    "\n",
+    "    return logger\n",
+    "\n",
+    "\n",
+    "def setup_basic_file_paths(project_name: str) -> tuple[str, str, str, str, str]:\n",
+    "    \"\"\"Sets up the project folder and creates log, data, and temp folders.\n",
+    "    Also creates the path to the log file.\n",
+    "\n",
+    "    Args:\n",
+    "        project_name (str): The name of the project.\n",
+    "\n",
+    "    Returns:\n",
+    "        tuple[str, str, str, str]: A tuple containing the paths of the project folder,\n",
+    "        data folder, temp folder, log folder, and log file, respectively.\n",
+    "\n",
+    "    Example Usage:\n",
+    "        `project_folder, data_folder, temp_folder, log_folder, log_file_path = setup_basic_file_paths(\"MyProject\")`\n",
+    "    \"\"\"\n",
+    "    # pylint: disable=import-outside-toplevel\n",
+    "    import os\n",
+    "\n",
+    "    # create the project folder\n",
+    "    cwd = os.getcwd()\n",
+    "    project_folder = os.path.join(cwd, project_name)\n",
+    "    os.makedirs(project_folder, exist_ok=True)\n",
+    "\n",
+    "    # create the data folder\n",
+    "    data_folder = os.path.join(project_folder, 'data')\n",
+    "    os.makedirs(data_folder, exist_ok=True)\n",
+    "\n",
+    "    # make the temp folder\n",
+    "    temp_folder = os.path.join(project_folder, 'temp')\n",
+    "    os.makedirs(temp_folder, exist_ok=True)\n",
+    "\n",
+    "    # make the log folder and log file path\n",
+    "    log_folder = os.path.join(project_folder, 'logs')\n",
+    "    os.makedirs(log_folder, exist_ok=True)\n",
+    "    log_file_path = os.path.join(log_folder, f'{project_name}.log')\n",
+    "\n",
+    "    return (project_folder, data_folder, temp_folder, log_folder, log_file_path)\n",
+    "\n",
+    "\n",
+    "def save_temp_file(\n",
+    "        temp_folder: str,\n",
+    "        file_name: str,\n",
+    "        content: str | set | list | dict,\n",
+    "        extionsion: str) -> None:\n",
+    "    \"\"\"Saves the given content to a temporary file in the specified temp folder.\n",
+    "\n",
+    "    Args:\n",
+    "        `temp_folder (str)`: The path to the temporary folder.\n",
+    "        `file_name (str)`: The name of the temporary file.\n",
+    "        `content (str | set | list | dict)`: The content to be written to the temporary file. \n",
+    "            Lists,sets will be formatted with newlines\n",
+    "        `extension (str)`: The file extension of the temporary file.\n",
+    "\n",
+    "    Returns:\n",
+    "        None\n",
+    "\n",
+    "    Example Usage:\n",
+    "        `save_temp_file(\"/path/to/temp/folder\", \"example_file\", \"This is the file content\", \"txt\")`\n",
+    "    \"\"\"\n",
+    "    # pylint: disable=import-outside-toplevel\n",
+    "    import os\n",
+    "\n",
+    "    # format the content to a string\n",
+    "    if isinstance(content, list):\n",
+    "        string_content = '\\n'.join([str(item) for item in content])\n",
+    "    elif isinstance(content, set):\n",
+    "        string_content = '\\n'.join([str(item) for item in content])\n",
+    "    elif isinstance(content, dict):\n",
+    "        # pylint: disable=import-outside-toplevel\n",
+    "        import json\n",
+    "        string_content = json.dumps(content)\n",
+    "    else:\n",
+    "        string_content = content\n",
+    "\n",
+    "    # now save the temp file\n",
+    "    with open(os.path.join(temp_folder, f'{file_name}.{extionsion}'),\n",
+    "              'w', encoding='utf-8') as temp_file:\n",
+    "        temp_file.write(string_content)\n",
+    "\n",
+    "\n",
+    "def format_error(error: str) -> str:\n",
+    "    \"\"\"Removes newlines from the given error string.\n",
+    "\n",
+    "    Args:\n",
+    "        `error (str)`: The error string to be formatted.\n",
+    "\n",
+    "    Returns:\n",
+    "        str: The formatted error string.\n",
+    "\n",
+    "    Example Usage:\n",
+    "        `formatted_error = format_error(error)`\n",
+    "    \"\"\"\n",
+    "\n",
+    "    # remove newline characters\n",
+    "    error = str(error)\n",
+    "    formatted_error = error.replace('\\n', '')\n",
+    "\n",
+    "    return formatted_error\n",
+    "\n",
+    "\n",
+    "def basic_request(\n",
+    "        url: str,\n",
+    "        logger: Optional[Union[None, logging.Logger]] = None,\n",
+    "        logger_level_debug: Optional[bool] = False) -> str:\n",
+    "    \"\"\"Makes a basic HTTP GET request to the given URL.\n",
+    "\n",
+    "    Args:\n",
+    "        `url (str)`: The URL to make the request to.\n",
+    "        `logger (Optional:None, logging.Logger)`: The logger instance to log warnings. \n",
+    "                (default: None)\n",
+    "        `logger_level_debug (Optional:bool)`: Whether to log warnings at debug level. \n",
+    "                (default: False)\n",
+    "\n",
+    "    Returns:\n",
+    "        str: The content of the response if the request was successful.\n",
+    "\n",
+    "    Raises:\n",
+    "        RuntimeError: If the request failed after 5 retries.\n",
+    "\n",
+    "    Example Usage:\n",
+    "        `response_content = basic_request(\"https://example.com\", logger)`\n",
+    "    \"\"\"\n",
+    "\n",
+    "    retries = 0\n",
+    "    while retries < 5:\n",
+    "        headers = {\n",
+    "            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0'\n",
+    "        }\n",
+    "        response = requests.get(url, headers=headers, timeout=5)\n",
+    "\n",
+    "        if response.status_code == 200:\n",
+    "            # do the okay things\n",
+    "            content = response.text\n",
+    "            break\n",
+    "\n",
+    "        # if not okay, then start logging and retrying\n",
+    "        if logger:\n",
+    "            # if logger level is said to be debug, do debug, otherwise it's a warning\n",
+    "            if logger_level_debug:\n",
+    "                logger.warning(\n",
+    "                    'Failed to get request. \\\n",
+    "                    Status code %d, Response text: %s',\n",
+    "                    response.status_code, format_error(response.text))\n",
+    "            else:\n",
+    "                logger.warning(\n",
+    "                    'Failed to get request. \\\n",
+    "                    Status code %d, Response text: %s',\n",
+    "                    response.status_code, format_error(response.text))\n",
+    "\n",
+    "        # sleep 1 second and incrase retries\n",
+    "        time.sleep(1)\n",
+    "        retries += 1\n",
+    "        continue\n",
+    "\n",
+    "    # raise an error if we tried more than 5 and still failed\n",
+    "    if retries >= 5:\n",
+    "        raise RuntimeError(f'No response from website. \\\n",
+    "                            Last status code {response.status_code}, \\\n",
+    "                            Response text: {format_error(response.text)}')\n",
+    "\n",
+    "    return content\n",
+    "\n",
+    "\n",
+    "def save_ndjson(data: dict, file_path: str) -> None:\n",
+    "    \"\"\"Saves the given data to the same ndjson file\"\"\"\n",
+    "    # pylint: disable=import-outside-toplevel\n",
+    "    import json\n",
+    "\n",
+    "    with open(file_path, 'a', encoding='utf-8') as dump_file:\n",
+    "        dump_file.write(f'{json.dumps(data)}\\n')\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d737060c",
+   "metadata": {
+    "papermill": {
+     "duration": 0.007011,
+     "end_time": "2024-08-15T18:16:05.417663",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.410652",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## Dev options"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "0d063c16",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:05.434154Z",
+     "iopub.status.busy": "2024-08-15T18:16:05.433351Z",
+     "iopub.status.idle": "2024-08-15T18:16:05.438774Z",
+     "shell.execute_reply": "2024-08-15T18:16:05.437657Z"
+    },
+    "papermill": {
+     "duration": 0.01596,
+     "end_time": "2024-08-15T18:16:05.440842",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.424882",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "RUN_ONLY_ONE = False  # only extracts 1 iteraetion\n",
+    "RUN_25_ITR = True # Extracts 25 fighters for testing\n",
+    "IS_IC_DEBUG = False  # mark true to log ic statements"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "119f2dc7",
+   "metadata": {
+    "papermill": {
+     "duration": 0.006961,
+     "end_time": "2024-08-15T18:16:05.455071",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.448110",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## Global variables"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "01d4b319",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:05.471501Z",
+     "iopub.status.busy": "2024-08-15T18:16:05.470640Z",
+     "iopub.status.idle": "2024-08-15T18:16:05.475383Z",
+     "shell.execute_reply": "2024-08-15T18:16:05.474285Z"
+    },
+    "papermill": {
+     "duration": 0.015114,
+     "end_time": "2024-08-15T18:16:05.477318",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.462204",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "PROJECT_NAME = 'scrape_ufc_stats'\n",
+    "LOGGER = None"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "efe6e7bb",
+   "metadata": {
+    "papermill": {
+     "duration": 0.008275,
+     "end_time": "2024-08-15T18:16:05.492916",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.484641",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "THis function extracts the figheter page links from a given html"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "b9827cc0",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:05.509547Z",
+     "iopub.status.busy": "2024-08-15T18:16:05.508498Z",
+     "iopub.status.idle": "2024-08-15T18:16:05.514456Z",
+     "shell.execute_reply": "2024-08-15T18:16:05.513510Z"
+    },
+    "papermill": {
+     "duration": 0.016264,
+     "end_time": "2024-08-15T18:16:05.516414",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.500150",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def extract_fighter_pagelinks_from_serp(html: str) -> set[str]:\n",
+    "\n",
+    "    soup = BeautifulSoup(html, 'html.parser')\n",
+    "\n",
+    "    # extract all the links\n",
+    "    tags = soup.select('tr.b-statistics__table-row a')\n",
+    "    links = [tag.get('href') for tag in tags]\n",
+    "\n",
+    "    unique_links = set(links)\n",
+    "\n",
+    "    return unique_links"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "10338f7c",
+   "metadata": {
+    "papermill": {
+     "duration": 0.006961,
+     "end_time": "2024-08-15T18:16:05.530627",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.523666",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## THis function is used to handle getting all the links to the fighers\n",
+    "Returns a list of urls"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "36fb8fb7",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:05.547339Z",
+     "iopub.status.busy": "2024-08-15T18:16:05.546354Z",
+     "iopub.status.idle": "2024-08-15T18:16:05.553336Z",
+     "shell.execute_reply": "2024-08-15T18:16:05.552369Z"
+    },
+    "papermill": {
+     "duration": 0.017955,
+     "end_time": "2024-08-15T18:16:05.555865",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.537910",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def get_fighters() -> set[str]:\n",
+    "    LOGGER.info('Starting to get fighters from SERPS')\n",
+    "\n",
+    "    # get all the letters in the alphabet\n",
+    "    letters = string.ascii_lowercase\n",
+    "    all_links = set()\n",
+    "\n",
+    "    # get the fighter pages for each letter\n",
+    "    for letter in letters:\n",
+    "        LOGGER.info('Extracting letter %s', letter)\n",
+    "\n",
+    "        # get the html for the letter\n",
+    "        url = f'http://ufcstats.com/statistics/fighters?char={letter}&page=all'\n",
+    "        try:\n",
+    "            html = basic_request(url, LOGGER)\n",
+    "        except RuntimeError:\n",
+    "            continue\n",
+    "\n",
+    "        # now parse the html to extract the links to the fighters\n",
+    "        links = extract_fighter_pagelinks_from_serp(html)\n",
+    "\n",
+    "        all_links.update(links)\n",
+    "\n",
+    "        if RUN_ONLY_ONE:\n",
+    "            break\n",
+    "\n",
+    "    LOGGER.info('Found %d unique links', len(all_links))\n",
+    "\n",
+    "    return all_links"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b555f55e",
+   "metadata": {
+    "papermill": {
+     "duration": 0.006911,
+     "end_time": "2024-08-15T18:16:05.570232",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.563321",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## Extracts the bio data from the given html"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "2d870756",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:05.586805Z",
+     "iopub.status.busy": "2024-08-15T18:16:05.586074Z",
+     "iopub.status.idle": "2024-08-15T18:16:05.601231Z",
+     "shell.execute_reply": "2024-08-15T18:16:05.600170Z"
+    },
+    "papermill": {
+     "duration": 0.026169,
+     "end_time": "2024-08-15T18:16:05.603431",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.577262",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def extract_bio_data(soup: BeautifulSoup, fighter_name: str) -> dict:\n",
+    "    try:\n",
+    "        # convert the data card to a list and extract the data\n",
+    "        physicial_data = soup.select_one(\n",
+    "            '.b-list__info-box.b-list__info-box_style_small-width')\\\n",
+    "            .get_text(strip=True, separator='_').split('_')\n",
+    "        if IS_IC_DEBUG:\n",
+    "            ic(physicial_data)\n",
+    "        try:\n",
+    "            height = physicial_data[1]\n",
+    "        except IndexError:\n",
+    "            height = None\n",
+    "        try:\n",
+    "            weight = physicial_data[3]\n",
+    "        except IndexError:\n",
+    "            weight = None\n",
+    "        try:\n",
+    "            reach = physicial_data[5]\n",
+    "        except IndexError:\n",
+    "            reach = None\n",
+    "        try:\n",
+    "            stance = physicial_data[7]\n",
+    "        except IndexError:\n",
+    "            stance = None\n",
+    "        try:\n",
+    "            dob = physicial_data[9]\n",
+    "        except IndexError:\n",
+    "            dob = None\n",
+    "\n",
+    "        def format_weight_to_kg(weight: str) -> int | None:\n",
+    "\n",
+    "            # get digits, if in pounds, convert to kg, else none\n",
+    "            digit_weight = re.match(r'(\\d+)', weight).group(0)\n",
+    "            if digit_weight:\n",
+    "                if 'lbs' in weight:\n",
+    "                    weight_in_kg = round(int(digit_weight)*0.453592, 2)\n",
+    "            else:\n",
+    "                weight_in_kg = None\n",
+    "\n",
+    "            return weight_in_kg\n",
+    "\n",
+    "        # format weight to kg\n",
+    "        if weight and \"--\" != weight:\n",
+    "            weight_in_kg = format_weight_to_kg(weight)\n",
+    "        else:\n",
+    "            weight_in_kg = None\n",
+    "\n",
+    "        # format the date of birth\n",
+    "        # pylint: disable=bare-except\n",
+    "        if dob and \"--\" != dob:\n",
+    "            try:\n",
+    "                date_of_birth = str(\n",
+    "                    datetime.datetime.strptime(dob, '%b %d, %Y').date())\n",
+    "            except:\n",
+    "                date_of_birth = None\n",
+    "        else:\n",
+    "            date_of_birth = None\n",
+    "\n",
+    "        def convert_height_to_cm(height: str) -> int:\n",
+    "            # convert height to cm\n",
+    "            ureg = pint.UnitRegistry()\n",
+    "            h_feet, h_inches = height.split(' ')\n",
+    "\n",
+    "            try:\n",
+    "                # use regex to extract the digits, convert to int and store as feet and inches\n",
+    "                h_feet, h_inches = int(re.match(\n",
+    "                    r'(\\d+)', h_feet).group(0)), int(re.match(r'(\\d+)', h_inches).group(0))\n",
+    "\n",
+    "                # do conversion\n",
+    "                default_height = h_feet*ureg.foot + h_inches * ureg.inch\n",
+    "                height_cm = default_height.to(ureg.centimeter)\n",
+    "\n",
+    "                height_cm = round(height_cm.magnitude, 2)\n",
+    "            except:\n",
+    "                height_cm = None\n",
+    "\n",
+    "            return height_cm\n",
+    "\n",
+    "        # convert height to cm\n",
+    "        if height and \"--\" != height:\n",
+    "            height_cm = convert_height_to_cm(height)\n",
+    "        else:\n",
+    "            height_cm = None\n",
+    "\n",
+    "        def convert_reach_to_cm(reach: str) -> int | None:\n",
+    "            reach_in_inch = reach if reach != '--' else None\n",
+    "\n",
+    "            if reach_in_inch:\n",
+    "                reach_in_cm = int(reach_in_inch.split('\"')[0])*2.54\n",
+    "            else:\n",
+    "                reach_in_cm = None\n",
+    "\n",
+    "            return reach_in_cm\n",
+    "\n",
+    "        # convert reach to cm\n",
+    "        if reach and \"--\" != reach:\n",
+    "            reach_in_cm = convert_reach_to_cm(reach)\n",
+    "        else:\n",
+    "            reach_in_cm = None\n",
+    "\n",
+    "    # pylint: disable=broad-except\n",
+    "    except Exception as error:\n",
+    "        LOGGER.warning('Exception for %s on extract_bio_data(): %s', fighter_name,\n",
+    "                       format_error(error))\n",
+    "        height_cm = weight_in_kg = reach_in_cm = stance = date_of_birth = None\n",
+    "\n",
+    "    bio_data = {\n",
+    "        \"height_cm\": height_cm,\n",
+    "        \"weight_in_kg\": weight_in_kg,\n",
+    "        \"reach_in_cm\": reach_in_cm,\n",
+    "        \"stance\": stance if stance != '--' else None,\n",
+    "        \"date_of_birth\": date_of_birth\n",
+    "    }\n",
+    "\n",
+    "    return bio_data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f567efdf",
+   "metadata": {
+    "papermill": {
+     "duration": 0.006932,
+     "end_time": "2024-08-15T18:16:05.617998",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.611066",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## Extracts the career data from the given html"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "3636c759",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:05.634350Z",
+     "iopub.status.busy": "2024-08-15T18:16:05.633403Z",
+     "iopub.status.idle": "2024-08-15T18:16:05.642381Z",
+     "shell.execute_reply": "2024-08-15T18:16:05.641395Z"
+    },
+    "papermill": {
+     "duration": 0.019411,
+     "end_time": "2024-08-15T18:16:05.644462",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.625051",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def extract_career_data(soup: BeautifulSoup, fighter_name: str) -> dict:\n",
+    "    try:\n",
+    "        career_data = soup.select_one(\n",
+    "            '.b-list__info-box.b-list__info-box_style_middle-width')\\\n",
+    "            .get_text(strip=True, separator='_').split('_')\n",
+    "\n",
+    "        significant_strikes_landed_per_minute = float(career_data[2])\n",
+    "        significant_striking_accuracy = float(career_data[4].replace('%', ''))\n",
+    "        significant_strikes_absorbed_per_minute = float(career_data[6])\n",
+    "        significant_strike_defence = float(career_data[8].replace('%', ''))\n",
+    "        average_takedowns_landed_per_15_minutes = float(career_data[10])\n",
+    "        takedown_accuracy = float(career_data[12].replace('%', ''))\n",
+    "        takedown_defense = float(career_data[14].replace('%', ''))\n",
+    "        average_submissions_attempted_per_15_minutes = float(career_data[2])\n",
+    "\n",
+    "    # pylint: disable=broad-except\n",
+    "    except Exception as error:\n",
+    "        LOGGER.warning('Exception for %s on extract_career_data(): %s', fighter_name,\n",
+    "                       format_error(error))\n",
+    "        significant_strikes_landed_per_minute = None\n",
+    "        significant_striking_accuracy = None\n",
+    "        significant_strikes_absorbed_per_minute = None\n",
+    "        significant_strike_defence = None\n",
+    "        average_takedowns_landed_per_15_minutes = None\n",
+    "        takedown_accuracy = None\n",
+    "        takedown_defense = None\n",
+    "        average_submissions_attempted_per_15_minutes = None\n",
+    "\n",
+    "    career_dict = {\n",
+    "        'significant_strikes_landed_per_minute': significant_strikes_landed_per_minute,\n",
+    "        'significant_striking_accuracy': significant_striking_accuracy,\n",
+    "        'significant_strikes_absorbed_per_minute': significant_strikes_absorbed_per_minute,\n",
+    "        'significant_strike_defence': significant_strike_defence,\n",
+    "        'average_takedowns_landed_per_15_minutes': average_takedowns_landed_per_15_minutes,\n",
+    "        'takedown_accuracy': takedown_accuracy,\n",
+    "        'takedown_defense': takedown_defense,\n",
+    "        'average_submissions_attempted_per_15_minutes': average_submissions_attempted_per_15_minutes\n",
+    "    }\n",
+    "\n",
+    "    return career_dict"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "765c30bc",
+   "metadata": {
+    "papermill": {
+     "duration": 0.006895,
+     "end_time": "2024-08-15T18:16:05.658561",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.651666",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## Extracts fighter data from the given html"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "7282cde9",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:05.674684Z",
+     "iopub.status.busy": "2024-08-15T18:16:05.674250Z",
+     "iopub.status.idle": "2024-08-15T18:16:05.684402Z",
+     "shell.execute_reply": "2024-08-15T18:16:05.683593Z"
+    },
+    "papermill": {
+     "duration": 0.020987,
+     "end_time": "2024-08-15T18:16:05.686615",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.665628",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def extract_fighter_data(fighter_html: str) -> dict:\n",
+    "    soup = BeautifulSoup(fighter_html, 'html.parser')\n",
+    "\n",
+    "    try:\n",
+    "        fighter_name = soup.select_one(\n",
+    "            '.b-content__title-highlight').get_text(strip=True)\n",
+    "    except AttributeError:\n",
+    "        fighter_name = None\n",
+    "\n",
+    "    try:\n",
+    "        win, loss, draw = soup.select_one(\n",
+    "            '.b-content__title-record')\\\n",
+    "            .get_text(strip=True)\\\n",
+    "            .split(' ', maxsplit=1)[-1]\\\n",
+    "            .strip()\\\n",
+    "            .split(' ')[0]\\\n",
+    "            .strip()\\\n",
+    "            .split('-')\n",
+    "\n",
+    "        win = int(win)\n",
+    "        loss = int(loss)\n",
+    "        draw = int(draw)\n",
+    "\n",
+    "    except (AttributeError, ValueError):\n",
+    "        win, loss, draw = None, None, None\n",
+    "\n",
+    "    try:\n",
+    "        nickname = soup.select_one('.b-content__Nickname').get_text(strip=True)\n",
+    "        if \"\" == nickname:\n",
+    "            nickname = None\n",
+    "    except AttributeError:\n",
+    "        nickname = None\n",
+    "\n",
+    "    bio_data = extract_bio_data(soup, fighter_name)\n",
+    "    career_data = extract_career_data(soup, fighter_name)\n",
+    "\n",
+    "    fighter_data = {\n",
+    "        \"name\": fighter_name,\n",
+    "        \"nickname\": nickname,\n",
+    "        \"wins\": win,\n",
+    "        \"losses\": loss,\n",
+    "        \"draws\": draw,\n",
+    "        \"height_cm\": bio_data['height_cm'],\n",
+    "        \"weight_in_kg\": bio_data['weight_in_kg'],\n",
+    "        \"reach_in_cm\": bio_data['reach_in_cm'],\n",
+    "        \"stance\": bio_data['stance'],\n",
+    "        \"date_of_birth\": bio_data['date_of_birth'],\n",
+    "        'significant_strikes_landed_per_minute': career_data['significant_strikes_landed_per_minute'],\n",
+    "        'significant_striking_accuracy': career_data['significant_striking_accuracy'],\n",
+    "        'significant_strikes_absorbed_per_minute': career_data['significant_strikes_absorbed_per_minute'],\n",
+    "        'significant_strike_defence': career_data['significant_strike_defence'],\n",
+    "        'average_takedowns_landed_per_15_minutes': career_data['average_takedowns_landed_per_15_minutes'],\n",
+    "        'takedown_accuracy': career_data['takedown_accuracy'],\n",
+    "        'takedown_defense': career_data['takedown_defense'],\n",
+    "        'average_submissions_attempted_per_15_minutes': career_data['average_submissions_attempted_per_15_minutes'],\n",
+    "\n",
+    "    }\n",
+    "\n",
+    "    return fighter_data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "852ae1cc",
+   "metadata": {
+    "papermill": {
+     "duration": 0.007286,
+     "end_time": "2024-08-15T18:16:05.701341",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.694055",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## Load the fighter page and handles extracting fighter data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "b7df1e71",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:05.718011Z",
+     "iopub.status.busy": "2024-08-15T18:16:05.716954Z",
+     "iopub.status.idle": "2024-08-15T18:16:05.722864Z",
+     "shell.execute_reply": "2024-08-15T18:16:05.721801Z"
+    },
+    "papermill": {
+     "duration": 0.016598,
+     "end_time": "2024-08-15T18:16:05.725116",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.708518",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def get_n_extract_fighter_data(link: str) -> dict:\n",
+    "    # LOGGER.info('Processing fighter %s', link)\n",
+    "\n",
+    "    # first get the page\n",
+    "    try:\n",
+    "        page = basic_request(link, LOGGER)\n",
+    "    except RuntimeError as error:\n",
+    "        raise RuntimeError from error\n",
+    "\n",
+    "    # now parse the page:\n",
+    "    fighter_dict = extract_fighter_data(page)\n",
+    "\n",
+    "    return fighter_dict"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "682c5850",
+   "metadata": {
+    "papermill": {
+     "duration": 0.006812,
+     "end_time": "2024-08-15T18:16:05.739207",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.732395",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## This is the main handler for this script"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "4b540975",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:05.755327Z",
+     "iopub.status.busy": "2024-08-15T18:16:05.754581Z",
+     "iopub.status.idle": "2024-08-15T18:16:05.762115Z",
+     "shell.execute_reply": "2024-08-15T18:16:05.761090Z"
+    },
+    "papermill": {
+     "duration": 0.018045,
+     "end_time": "2024-08-15T18:16:05.764293",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.746248",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def executor() -> None:\n",
+    "    # pylint: disable=global-statement\n",
+    "    global LOGGER\n",
+    "\n",
+    "    # setup folders\n",
+    "    _, data_folder, _, _, log_file_path = setup_basic_file_paths(\n",
+    "        PROJECT_NAME)\n",
+    "\n",
+    "    # setup a logger\n",
+    "    LOGGER = setup_logger(log_file_path)\n",
+    "\n",
+    "    fighter_links = get_fighters()\n",
+    "\n",
+    "    # ndjson save file for all the fighteres\n",
+    "    ndjson_file_path = os.path.join(data_folder, 'fighter_data.ndjson')\n",
+    "\n",
+    "    # get data for each individual fighter\n",
+    "    for i, fighter in enumerate(fighter_links):\n",
+    "        LOGGER.info('Processing %d out of %d. Fighter url: %s',\n",
+    "                    i, len(fighter_links), fighter)\n",
+    "        try:\n",
+    "            fighter_data = get_n_extract_fighter_data(fighter)\n",
+    "\n",
+    "            save_ndjson(fighter_data, ndjson_file_path)\n",
+    "\n",
+    "            if RUN_ONLY_ONE:\n",
+    "                break\n",
+    "            if RUN_25_ITR and i==24:\n",
+    "                break\n",
+    "        except RuntimeError:\n",
+    "            LOGGER.debug(\n",
+    "                'Skipping a fighter due to a requests error: %s', fighter)\n",
+    "\n",
+    "            if RUN_ONLY_ONE:\n",
+    "                break\n",
+    "            if RUN_25_ITR and i==24:\n",
+    "                break\n",
+    "            continue\n",
+    "    LOGGER.info('Finished the executor')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "c3fb053d",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-08-15T18:16:05.780783Z",
+     "iopub.status.busy": "2024-08-15T18:16:05.780063Z",
+     "iopub.status.idle": "2024-08-15T18:16:56.093086Z",
+     "shell.execute_reply": "2024-08-15T18:16:56.092047Z"
+    },
+    "papermill": {
+     "duration": 50.323744,
+     "end_time": "2024-08-15T18:16:56.095476",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:05.771732",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2024-08-15 18:16:05,782 :   INFO   :   Starting to get fighters from SERPS\n",
+      "2024-08-15 18:16:05,783 :   INFO   :   Extracting letter a\n",
+      "2024-08-15 18:16:06,961 :   INFO   :   Extracting letter b\n",
+      "2024-08-15 18:16:08,444 :   INFO   :   Extracting letter c\n",
+      "2024-08-15 18:16:10,010 :   INFO   :   Extracting letter d\n",
+      "2024-08-15 18:16:11,220 :   INFO   :   Extracting letter e\n",
+      "2024-08-15 18:16:12,110 :   INFO   :   Extracting letter f\n",
+      "2024-08-15 18:16:13,057 :   INFO   :   Extracting letter g\n",
+      "2024-08-15 18:16:14,562 :   INFO   :   Extracting letter h\n",
+      "2024-08-15 18:16:15,978 :   INFO   :   Extracting letter i\n",
+      "2024-08-15 18:16:16,758 :   INFO   :   Extracting letter j\n",
+      "2024-08-15 18:16:17,732 :   INFO   :   Extracting letter k\n",
+      "2024-08-15 18:16:19,020 :   INFO   :   Extracting letter l\n",
+      "2024-08-15 18:16:20,154 :   INFO   :   Extracting letter m\n",
+      "2024-08-15 18:16:22,191 :   INFO   :   Extracting letter n\n",
+      "2024-08-15 18:16:23,067 :   INFO   :   Extracting letter o\n",
+      "2024-08-15 18:16:23,875 :   INFO   :   Extracting letter p\n",
+      "2024-08-15 18:16:25,157 :   INFO   :   Extracting letter q\n",
+      "2024-08-15 18:16:25,841 :   INFO   :   Extracting letter r\n",
+      "2024-08-15 18:16:27,416 :   INFO   :   Extracting letter s\n",
+      "2024-08-15 18:16:29,357 :   INFO   :   Extracting letter t\n",
+      "2024-08-15 18:16:30,441 :   INFO   :   Extracting letter u\n",
+      "2024-08-15 18:16:31,116 :   INFO   :   Extracting letter v\n",
+      "2024-08-15 18:16:32,052 :   INFO   :   Extracting letter w\n",
+      "2024-08-15 18:16:33,087 :   INFO   :   Extracting letter x\n",
+      "2024-08-15 18:16:33,759 :   INFO   :   Extracting letter y\n",
+      "2024-08-15 18:16:34,543 :   INFO   :   Extracting letter z\n",
+      "2024-08-15 18:16:35,305 :   INFO   :   Found 4238 unique links\n",
+      "2024-08-15 18:16:35,306 :   INFO   :   Processing 0 out of 4238. Fighter url: http://ufcstats.com/fighter-details/902ab9197b83d0db\n",
+      "2024-08-15 18:16:36,312 :   INFO   :   Processing 1 out of 4238. Fighter url: http://ufcstats.com/fighter-details/1bcaac2d99b90fce\n",
+      "2024-08-15 18:16:37,229 :   INFO   :   Processing 2 out of 4238. Fighter url: http://ufcstats.com/fighter-details/4665cbf36b08193b\n",
+      "2024-08-15 18:16:38,057 :   INFO   :   Processing 3 out of 4238. Fighter url: http://ufcstats.com/fighter-details/b07aed698fba8624\n",
+      "2024-08-15 18:16:38,750 :   INFO   :   Processing 4 out of 4238. Fighter url: http://ufcstats.com/fighter-details/18d01f7f8338ae72\n",
+      "2024-08-15 18:16:39,567 :   INFO   :   Processing 5 out of 4238. Fighter url: http://ufcstats.com/fighter-details/4aa58269d0664b5b\n",
+      "2024-08-15 18:16:40,510 :   INFO   :   Processing 6 out of 4238. Fighter url: http://ufcstats.com/fighter-details/34b96d52db1d26e6\n",
+      "2024-08-15 18:16:41,429 :   INFO   :   Processing 7 out of 4238. Fighter url: http://ufcstats.com/fighter-details/b180f05acb24d430\n",
+      "2024-08-15 18:16:42,227 :   INFO   :   Processing 8 out of 4238. Fighter url: http://ufcstats.com/fighter-details/cd2c4d30c6e13b47\n",
+      "2024-08-15 18:16:43,153 :   INFO   :   Processing 9 out of 4238. Fighter url: http://ufcstats.com/fighter-details/7a47e068f8017019\n",
+      "2024-08-15 18:16:44,022 :   INFO   :   Processing 10 out of 4238. Fighter url: http://ufcstats.com/fighter-details/8f313e9c3a39c06e\n",
+      "2024-08-15 18:16:44,835 :   INFO   :   Processing 11 out of 4238. Fighter url: http://ufcstats.com/fighter-details/984b0c4c6e773a1c\n",
+      "2024-08-15 18:16:45,379 :   INFO   :   Processing 12 out of 4238. Fighter url: http://ufcstats.com/fighter-details/86b9b51a81e9c339\n",
+      "2024-08-15 18:16:46,262 :   INFO   :   Processing 13 out of 4238. Fighter url: http://ufcstats.com/fighter-details/c1085e1701b13eca\n",
+      "2024-08-15 18:16:47,205 :   INFO   :   Processing 14 out of 4238. Fighter url: http://ufcstats.com/fighter-details/d76ad9a08c4408ff\n",
+      "2024-08-15 18:16:48,053 :   INFO   :   Processing 15 out of 4238. Fighter url: http://ufcstats.com/fighter-details/e2b8186b618b00c4\n",
+      "2024-08-15 18:16:48,879 :   INFO   :   Processing 16 out of 4238. Fighter url: http://ufcstats.com/fighter-details/c26ea30823f37316\n",
+      "2024-08-15 18:16:49,677 :   INFO   :   Processing 17 out of 4238. Fighter url: http://ufcstats.com/fighter-details/fc31f896cde2bc2e\n",
+      "2024-08-15 18:16:50,574 :   INFO   :   Processing 18 out of 4238. Fighter url: http://ufcstats.com/fighter-details/88be62d6c1e6dadb\n",
+      "2024-08-15 18:16:51,085 :   INFO   :   Processing 19 out of 4238. Fighter url: http://ufcstats.com/fighter-details/aa571d75f80fde7d\n",
+      "2024-08-15 18:16:51,639 :   INFO   :   Processing 20 out of 4238. Fighter url: http://ufcstats.com/fighter-details/970beed85bc46b63\n",
+      "2024-08-15 18:16:52,469 :   INFO   :   Processing 21 out of 4238. Fighter url: http://ufcstats.com/fighter-details/de45aaae23dfa392\n",
+      "2024-08-15 18:16:53,503 :   INFO   :   Processing 22 out of 4238. Fighter url: http://ufcstats.com/fighter-details/fe91d254db77a7fc\n",
+      "2024-08-15 18:16:54,337 :   INFO   :   Processing 23 out of 4238. Fighter url: http://ufcstats.com/fighter-details/8a70ceb3edbe757b\n",
+      "2024-08-15 18:16:55,265 :   INFO   :   Processing 24 out of 4238. Fighter url: http://ufcstats.com/fighter-details/aa79d5399571068e\n",
+      "2024-08-15 18:16:56,088 :   INFO   :   Finished the executor\n"
+     ]
+    }
+   ],
+   "source": [
+    "executor()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e77509d3",
+   "metadata": {
+    "papermill": {
+     "duration": 0.010288,
+     "end_time": "2024-08-15T18:16:56.116490",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:56.106202",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## This script only ran 25 iteration\n",
+    "Since I already have the data extracted. \n",
+    "\n",
+    "Feel free to use this script to learn how to create a scraper"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8a8a6a0a",
+   "metadata": {
+    "papermill": {
+     "duration": 0.010272,
+     "end_time": "2024-08-15T18:16:56.137206",
+     "exception": false,
+     "start_time": "2024-08-15T18:16:56.126934",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "<img src=\"https://i.giphy.com/5K7ngCtszoxxbaBieC.gif\" style=\"margin:auto;width:40%;height:auto;\">"
+   ]
+  }
+ ],
+ "metadata": {
+  "kaggle": {
+   "accelerator": "none",
+   "dataSources": [
+    {
+     "datasetId": 4014495,
+     "sourceId": 7624946,
+     "sourceType": "datasetVersion"
+    }
+   ],
+   "dockerImageVersionId": 30587,
+   "isGpuEnabled": false,
+   "isInternetEnabled": true,
+   "language": "python",
+   "sourceType": "notebook"
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.12"
+  },
+  "papermill": {
+   "default_parameters": {},
+   "duration": 92.568722,
+   "end_time": "2024-08-15T18:16:56.568198",
+   "environment_variables": {},
+   "exception": null,
+   "input_path": "__notebook__.ipynb",
+   "output_path": "__notebook__.ipynb",
+   "parameters": {},
+   "start_time": "2024-08-15T18:15:23.999476",
+   "version": "2.4.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
