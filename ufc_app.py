@@ -44,7 +44,7 @@ def generate_elite_fighter_profile(fighter_name):
     # Past 5 fights opponents log
     last_5_opponents = pool_opponents[:5]
     
-    # All career opponents faced (e.g., 15 to 25 total fights)
+    # All career opponents faced
     total_career_opponents = pool_opponents + [f"Legacy Opponent {i}" for i in range(10)]
 
     profile = {
@@ -53,7 +53,6 @@ def generate_elite_fighter_profile(fighter_name):
         "last_5_opponents": last_5_opponents,
         "all_career_opponents": total_career_opponents,
         
-        # 1,000+ Parameter Vector Slice Simulation
         "striking_metrics": {
             "head_accuracy": np.random.uniform(0.42, 0.78),
             "body_accuracy": np.random.uniform(0.50, 0.85),
@@ -165,7 +164,7 @@ try:
     # High-alert banner for common opponents in past 5 fights
     st.markdown("---")
     if common_last_5:
-        st.success(🎯 **CRITICAL COMMON OPPONENT MATCH FOUND IN PAST 5 FIGHTS:** `{', '.join(common_last_5)}` has faced *both* fighters recently!)
+        st.success(f"🎯 **CRITICAL COMMON OPPONENT MATCH FOUND IN PAST 5 FIGHTS:** `{', '.join(common_last_5)}` has faced *both* fighters recently!")
     else:
         st.info("ℹ️ No shared opponents found directly within both fighters' **past 5 fights**. Scanning full historical roster matrices...")
 
@@ -176,7 +175,6 @@ try:
     st.markdown("---")
     if st.button("🚀 Execute Grandmaster Vector Calculus & EV Evaluation", use_container_width=True):
         
-        # Comprehensive calculation factoring striking, grappling, situational, and common opponent overlap context
         boost_a = 5.0 if common_last_5 else 0.0
         boost_b = 0.0
         
