@@ -62,10 +62,11 @@ try:
             events = fetch_live_odds(api_key)
 
         if not events:
-            st.info("No active MMA events found in the live sports feed right now. Displaying cached showcase bout structure.")
+            st.info("No active MMA events found in the live sports feed right now. Displaying showcase bout structure.")
             events = [{
                 'id': 'mock_event_1',
-                'name': 'Islam Makhachev vs. Arman Tsarukyan',
+                'home_team': 'Islam Makhachev',
+                'away_team': 'Arman Tsarukyan',
                 'commence_time': '2026-08-15T22:00:00Z',
                 'bookmakers': [{
                     'title': 'DraftKings',
@@ -81,7 +82,12 @@ try:
 
         st.subheader("🏟️ Active Fight Card & Live Bookmaker Markets")
         
-        selected_event_idx = st.selectbox("Select Matchup from Line Feed", range(len(events)), format_func=lambda i: events[i]['name'])
+        # Safely parse event titles using home_team and away_team keys
+        selected_event_idx = st.selectbox(
+            "Select Matchup from Line Feed", 
+            range(len(events)), 
+            format_func=lambda i: f"{events[i].get('home_team', 'Fighter 1')} vs. {events[i].get('away_team', 'Fighter 2')}"
+        )
         current_event = events[selected_event_idx]
         
         bookmakers = current_event.get('bookmakers', [])
@@ -98,7 +104,7 @@ try:
 
         fighters = list(odds_dict.keys())
         if len(fighters) < 2:
-            fighters = [current_event.get('name').split(" vs ")[0], current_event.get('name').split(" vs ")[-1]]
+            fighters = [current_event.get('home_team', 'Fighter A'), current_event.get('away_team', 'Fighter B')]
             odds_dict = {fighters[0]: -200, fighters[1]: +170}
 
         fighter_a, fighter_b = fighters[0], fighters[1]
@@ -112,20 +118,18 @@ try:
         
         with col_img1:
             st.markdown(f"### 🔴 {fighter_a}")
-            # Direct dynamic image search query placeholder mapped to Tapology profile assets
-            st.image(f"https://images.tapology.com/fighter_photos/placeholder_a.jpg", caption=f"{fighter_a} via Tapology Fighter Index", width=250, use_container_width=False)
+            st.image("https://images.tapology.com/fighter_photos/placeholder_a.jpg", caption=f"{fighter_a} via Tapology Fighter Index", width=250)
             st.write(f"**Bookmaker Line ({book_name}):** `{odds_a}`")
 
         with col_img2:
             st.markdown(f"### 🔵 {fighter_b}")
-            st.image(f"https://images.tapology.com/fighter_photos/placeholder_b.jpg", caption=f"{fighter_b} via Tapology Fighter Index", width=250, use_container_width=False)
+            st.image("https://images.tapology.com/fighter_photos/placeholder_b.jpg", caption=f"{fighter_b} via Tapology Fighter Index", width=250)
             st.write(f"**Bookmaker Line ({book_name}):** `{odds_b}`")
 
         # --- EXECUTION BUTTON ---
         st.markdown("---")
         if st.button("🚀 Run Full Quant EV & Multimedia Intelligence Scan", use_container_width=True):
             
-            # Vector calculation
             vector = pd.DataFrame({
                 'reach_diff': [1.2],
                 'age_diff': [-2.0],
